@@ -1,4 +1,31 @@
 h1 Город
 ul
-  li = link_to 'Москва', city_subway_path(1)
-  li = link_to 'Санкт-Петербург', city_subway_path(2)
+  li.subway
+    = link_to 'Москва', 
+              city_subway_path(1),
+              method: :get,
+              data: { type: :json },
+              class: 'abc',
+              remote: true
+
+  li.subway
+    = link_to 'Санкт-Петербург', 
+              city_subway_path(2),
+              method: :get,
+              data: { type: :json },
+              class: 'abc',
+              remote: true
+
+  li.subway
+    = link_to 'Моркваши', 
+              city_subway_path(3),
+              method: :get,
+              data: { type: :json },
+              class: 'abc',
+              remote: true
+
+p.stations
+/ = form_tag("/search", method: "get")
+/   = label_tag(:q, "Search for:")
+/   = text_field_tag(:q)
+/   = submit_tag("Search")

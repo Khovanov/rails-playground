@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   root to: 'cities#index'
 
   resources :cities, only: [:index] do 
-    get 'subway'
+    get :subway
   end
 end

@@ -4,12 +4,17 @@ class CitiesController < ApplicationController
   end
 
   def subway
-    stations = {
+    city_subway = {
       1 => %w(Парк\ культуры Спортивная Воробьёвы\ горы),
-      2 => %w(Улица\ Дыбенко Проспект\ Большевиков Ладожская),
+      2 => %w(Улица\ Дыбенко Проспект\ Большевиков Ладожская)
     }
 
-    render json: stations[params[:city_id].to_i].to_json
+    stations = city_subway[params[:city_id].to_i]
+    if stations
+      render json: stations.to_json
+    else
+      render json: { errors: ['Нету метро', 'В этом городе'] }, status: :not_found
+    end  
     # render plain: "subway"
     # head :no_content
   end
