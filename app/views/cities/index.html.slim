@@ -25,13 +25,19 @@ ul
               remote: true
 
 select.city
-  option.abc value="0" selected="selected" Выберите город
-  option.abc value="1" Москва
-  option.abc value="2" Санкт-Петербург
-  option.abc value="3" Моркваши
+  option value="0" selected="selected" Выберите город
+  option value="1" Москва
+  option value="2" Санкт-Петербург
+  option value="3" Моркваши
 
-p.stations
+div.stations
 
+div.item.hide
+  label
+    input name="" type="checkbox" value="0"
+
+/ checkbox.item display="none"
+/ li.item display="none"
 / = form_tag("/search", method: "get")
 /   = label_tag(:q, "Search for:")
 /   = text_field_tag(:q)

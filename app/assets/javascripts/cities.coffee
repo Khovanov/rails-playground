@@ -4,46 +4,50 @@
 
 subway = ->
   $('.subway')
-    .on 'ajax:success', (e, data, status, xhr) ->
-      load_stations($.parseJSON(xhr.responseText))
-    .bind 'ajax:error', (e, xhr, status, error) ->
-      show_errors($.parseJSON(xhr.responseText)['errors'])
-
-select_city = ->
-  # $('.city').on 'click', '.abc', (e) -> 
+    .on 'ajax:success', load_stations
+    .bind 'ajax:error', show_errors
+    # .on 'ajax:success', load_stations
+    # .bind 'ajax:error', show_errors
+    
+city = ->
   $('.city')
     .on 'change', (e) -> 
       # e.preventDefault();
-      $('.stations').empty()
       elem = $(this).prop('value')
-      $('.stations').append(elem)
-
       url = "/cities/" + elem + "/subway"
-      # $.get(url: url, load_stations)
-      # jqxhr = $.get url, (data) ->
+      # $.getJSON(url)
       jqxhr = $.get(url)
       jqxhr.done (data) ->
-        load_stations(data)
+        append_items(data)
       jqxhr.fail (xhr) ->
         # console.log(xhr.responseText)
-        show_errors($.parseJSON(xhr.responseText)['errors'])
+        append_items($.parseJSON(xhr.responseText)['errors'])
 
-load_stations = (stations) ->
-  # target = $(e.target).parents('.parent-class')
-  # if (target.hasClass('parent-class'))
-  $('.stations').empty()
-  for station, index in stations
-    # console.log(station)
-    elem = index.toString() + ' ' + station + "<br>"
-    $('.stations').append(elem)
+    # .on 'ajax:success', load_stations
+    # .bind 'ajax:error', show_errors
 
-show_errors = (errors) ->
+load_stations = (e, data, status, xhr) ->
+  append_items($.parseJSON(xhr.responseText))
+
+show_errors = (e, xhr, status, error) ->
+  append_items($.parseJSON(xhr.responseText)['errors'])
+
+append_items = (array) ->
   $('.stations').empty()
-  # console.log(typeof errors)
-  $.each errors, (index, error) ->
-    elem = index.toString() + ' ' + error + "<br>"
-    $('.stations').append(elem)  
+  item = $('.item')
+  stations = $('.stations')
+  for value, index in array
+    # console.log(value)
+    elem = item.clone().removeClass("hide")
+    elem.find('label').append(value)
+    elem.find('input').prop('name', 'st' + index)
+    # console.log(elem)
+    stations.append(elem)
+
+  # $.each errors, (index, error) ->
+  #   elem = index.toString() + ' ' + error + "<br>"
+  #   $('.stations').append(elem)
 
 $ ->
   subway()
-  select_city()
+  city()
